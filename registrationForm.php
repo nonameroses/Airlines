@@ -25,6 +25,15 @@ include "connection.php";
             <label for="password">Password:</label>
             <input type="text" id="password" name="password"> <br><br>
 
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name"> <br><br>
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name"> <br><br>
+
+            <label for="date_of_birth">Date of birth:</label>
+            <input type="text" id="date_of_birth" name="date_of_birth"> <br><br>
+
 
             <input type="submit" name="submitBtn" value="Submit">
         </form>

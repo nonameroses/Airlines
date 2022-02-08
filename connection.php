@@ -5,7 +5,7 @@ $password = "sterling22";
 
 try{
 
-    $conn = new PDO('mysql:host=localhost;dbname=airlinesdb', $username, $password);
+    $conn = new PDO('mysql:host=localhost;dbname=airlindb', $username, $password);
     $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
 }

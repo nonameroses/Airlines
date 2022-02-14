@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include "connect.php";
+include "connection.php";
 
 $query = $conn->prepare("SELECT * FROM airports");
 $query->execute();

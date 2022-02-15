@@ -2,16 +2,11 @@
 session_start();
 include("connection.php");
 
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
 
 
 if(isset($_POST['submitBtn'])){
         unset($_SESSION['errorMessage']);
+        $email = $_POST['email'];
         $password = $_POST['password'];
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $first_name = $_POST['first_name'];
@@ -29,12 +24,13 @@ if(isset($_POST['submitBtn'])){
         trigger_error("Error: Form Transmission Failure", E_USER_ERROR);
     }
 
-    if (empty($_POST['email']) || empty($_POST['password']) || empty($_POST['first_name']) || empty($_POST['last_name'] )
+  /*  if (empty($_POST['email']) || empty($_POST['password']) || empty($_POST['first_name']) || empty($_POST['last_name'] )
     || empty($_POST['Date'])){
         $_SESSION['errorMessage'] = true;
         header("Location: registrationForm.php");
         exit();
-    } else {
+    } else { */
+
         $sql = "INSERT INTO users (email, password, first_name, last_name, date_of_birth) VALUES(:email, :password, :first_name, :last_name, :date_of_birth)";
         $stmt = $conn->prepare($sql);
 
@@ -44,13 +40,14 @@ if(isset($_POST['submitBtn'])){
         $stmt->bindValue(':last_name', $last_name);
         $stmt->bindValue(':date_of_birth', $date);
 
-}
+
 
 
 
 
 if($stmt->execute()){
-
+    header("Location: loginForm.php");
+    echo "Registration Successful!";
 }
 ?>
 

@@ -2,7 +2,7 @@
 
 try{
 
-    $conn = new PDO('sftp://selene.hud.ac.uk;dbname=airportdb', 'u2065667', 'US28nov01us');
+    $conn = new PDO('mysql:host=localhost;dbname=penguinairlines', 'u2065667', '28NOV01');
     $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
 }

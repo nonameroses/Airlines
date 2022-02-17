@@ -1,7 +1,8 @@
 <?php
-session_start();
 
-include "connection.php";
+//session_start();
+
+include "connection_umur.php";
 
 $query = $conn->prepare("SELECT * FROM airports");
 $query->execute();
@@ -19,7 +20,7 @@ $airports = $query->fetchAll();
 
         <p>Fill in the fields below and click "Add Flight" to add a new flight</p> <br><br><br>
 
-        <form action="saveFlight.php" method="post" align="center">
+        <form action="saveNewFlight.php" method="post" align="center">
 
 
             <label for="from_Airport">Origin of Flight: </label>
@@ -51,23 +52,17 @@ $airports = $query->fetchAll();
             </select>
             <br><br>
 
-            <label for="pilot_id">Pilot ID:</label>
-            <input type="number" id="pilot_id" name="pilot_id"> <br><br>
-
-            <label for="attendant_id">Attendant ID:</label>
-            <input type="number" id="attendant_id" name="attendant_id"> <br><br>
-
             <label for="departure_datetime">Departure Date:</label>
-            <input type="datetime" id="departure_datetime" name="departure_datetime"> <br><br>
+            <input type="datetime-local" id="departure_datetime" name="departure_datetime"> <br><br>
 
             <label for="arrival_datetime">Arrival Time:</label>
-            <input type="datetime" id="arrival_datetime" name="arrival_datetime"> <br><br>
+            <input type="datetime-local" id="arrival_datetime" name="arrival_datetime"> <br><br>
 
-            <label for="number_of_seats">Attendant ID:</label>
+            <label for="number_of_seats">Number of Seats:</label>
             <input type="number" id="number_of_seats" name="number_of_seats"> <br><br>
 
-            <label for="price">Attendant ID:</label>
-            <input type="number" id="price" name="price"> <br><br>
+            <label for="price">Base Price:</label>
+            <input type="number" id="price" name="price" placeholder="Enter a number (£)" min="0" step=".01"> <br><br>
 
             <input type="submit" name="submitBtn" value="Add Flight">
         </form>

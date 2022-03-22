@@ -1,10 +1,6 @@
 <?php
 session_start();
-
-
-
-
-
+error_reporting(E_ALL);
 
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: index.php");
@@ -13,69 +9,67 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 include "connection.php";
 $email = $password = "";
 $email_err = $password_err = "";
+if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    if(empty(trim($_POST['email']))){
-        $email_err = "Please enter username";
-    }else{
+    if (empty(trim($_POST['email']))) {
+        $email_err = "Please enter Email";
+    } else {
         $email = trim($_POST['email']);
     }
 
-    if(empty(trim($_POST["password"]))){
+    if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
-    } else{
+    } else {
         $password = trim($_POST["password"]);
     }
 
-    if(empty($username_err) && empty($password_err)){
-        //$sql = "SELECT * FROM users WHERE email = :email AND password =:password";
-        $sql = "SELECT * FROM users WHERE username =:username AND password = :password";
+    if (empty($username_err) && empty($password_err)) {
+        $sql = "SELECT id, email, password, first_name, last_name FROM users WHERE email = :email";
 
         if($stmt = $conn->prepare($sql)){
-            $param_email = trim($_POST['email']);
-            $stmt->bindParam(':email', $param_email, PDO::PARAM_STR);
-            $stmt->bindParam(':password', $hashed_password);
+            $param_email = $_POST['email'];
+            $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
 
 
+            if($stmt->execute()){
+                if($stmt->rowCount() == 1){
+                    if($row = $stmt->fetch()){
+                        $id = $row["id"];
+                        $email = $row["email"];
+                        $password = $_POST["password"];
+                        $hashed_password = $row["password"];
 
-        }
-        if($stmt->execute()){
-            if($stmt->rowCount() == 1){
-                if($row = $stmt->fetch()){
-                    $id = $row['id'];
-                    $email = $row['email'];
-                    $hashed_password = $row['password'];
+                        $first_name = $row["first_name"];
+                        $last_name = $row["last_name"];
 
-                    if(password_verify($password, $hashed_password)){
+                        if(password_verify($password, $row['password'])){
                             session_start();
+                            session_regenerate_id(true);
 
-                        $_SESSION["loggedin"] = true;
-                         $_SESSION["id"] = $id;
-                        $_SESSION['email'] = $email;
-                        header("Location: index.php");
-                    }else{
-                        $login_err = "Invalid username or password";
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION["id"] = $id;
+                            $_SESSION["email"] = $email;
+                            //$_SESSION["password"] =$password;
+                            $_SESSION["first_name"] = $first_name;
+                            $_SESSION["last_name"] = $last_name;
+
+                            $login_err = "validddd username or password";
+                            header("Location: index.php");
+
+
+                        }
+
+
+
                     }
-                }
-            }else{
-                $login_err = "Invalid username or password";
+                }   $login_err = "Invalid username or password.";
+
             }
-        }else{
-            echo "Oops! Something went wrong. Please try again later.";
+
         }
         unset($stmt);
-
-    }
-    unset($conn);
-
-
-
-}
-
-
+    }}
 ?>
-
 
 
 <!DOCTYPE html>
@@ -102,9 +96,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <div class="wrapper">
     <h2>Sign Up</h2>
     <p>Please fill this form to create an account.</p>
+
+    <?php
+    if(!empty($login_err)){
+        echo '<div class="alert alert-danger">' . $login_err . '</div>';
+    }
+    ?>
+
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
         <div class="form-group">
+            <label> Email </label>
             <input type="text" name="email" id ="email" class="form-control
             <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>"
                    value="<?php echo $email; ?>">
@@ -119,11 +121,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Login" id="Login">
+            <input type="submit" class="btn btn-primary" value="login" id="login" name = "login">
             <input type="reset" class="btn btn-secondary ml-2" value="Reset">
         </div>
-        <p>Don't have an account? <a href="registrationForm.php">Register here</a>.</p>
+        <p>Don't have an account? <a href="registration.php">Register here</a>.</p>
     </form>
 </div>
 </body>
 </html>
+
+

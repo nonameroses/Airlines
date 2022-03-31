@@ -34,6 +34,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $lowercase = preg_match('@[a-z]@', trim($_POST["password"]));
     $number    = preg_match('@[0-9]@', trim($_POST["password"]));
 
+    $patternPhoneNumber = "/^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/";
+
+    $match = preg_match($patternPhoneNumber,trim($_POST["phone_number"]));
+
+
+
+
+
+
     if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
     } else {
@@ -78,7 +87,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty(trim($_POST["phone_number"]))) {
         $phone_number_err = "Please enter your phone number.";
     } else {
-        $phone_number = trim($_POST["phone_number"]);
+        if ($match != false) {
+            $phone_number = trim($_POST["phone_number"]);
+        } else {
+            $phone_number_err = "Incorrect Format, Use 07222 555555 or +44 7222 555 555 Format";
+        }
+
     }
 
 

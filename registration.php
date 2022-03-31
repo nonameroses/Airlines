@@ -172,6 +172,8 @@ VALUES(:email, :password, :first_name, :last_name,:country,:address, :post_code,
 
         }
 
+
+
         .wrapper{ width: 400px; padding: 10px; align="center"; text-align: center; margin: 0 auto;}
         span{display: flex; justify-content: center}
         .invalid-feedback{color: red}
@@ -293,7 +295,12 @@ VALUES(:email, :password, :first_name, :last_name,:country,:address, :post_code,
 </div>
 
 </body>
+<footer>
+    <?php
+    include ("footer.php");
+    ?>
+
+
+</footer>
 </html>
-<?php
-include ("footer.php");
-?>
+

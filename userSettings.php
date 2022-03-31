@@ -119,8 +119,4 @@ if(isset($_POST['edit'])) {
 </body>
 </html>
 
-<?php
-include ("footer.php");
-?>
-
 

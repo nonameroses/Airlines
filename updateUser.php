@@ -72,6 +72,11 @@ include "connection.php";
     </table>
 </form>
 </body>
+<?php
+include ("footer.php");
+?>
+
+
 </html>
 
 <?php

@@ -100,6 +100,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
         }
 
+         footer{
+             position:fixed;
+             left:0px;
+             right:8px;
+             bottom:0px;
+             width:100%;
+             z-index:99;
+             min-height: ;/*According to requirement*/
+             background-color: ;/*set color whichever you want*/
+         }
+
+
+
         .wrapper{ width: 400px; padding: 10px; align="center"; text-align: center; margin: 0 auto;}
         span{display: flex; justify-content: center}
     </style>
@@ -140,9 +153,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </div>
 </body>
+<footer>
+
+    <?php
+    include ("footer.php");
+    ?>
+
+</footer>
 </html>
-<?php
-include ("footer.php");
-?>
 
 

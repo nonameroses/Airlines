@@ -1,9 +1,18 @@
 <?php
 session_start();
 include("connection.php");
+include "header.php";
 
 $email = $password = $first_name = $last_name = $post_code = $address = $country = $phone_number = "";
 $email_err = $password_err = $first_name_err = $last_name_err = $post_code_err = $address_err = $country_err = $phone_number_err = "";
+
+
+//Validating Password
+
+
+
+
+
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -11,13 +20,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty(trim($_POST['email']))) {
         $email_err = "Please enter Email";
     } else {
-        $email = trim($_POST['email']);
+        if(filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL)){
+            $email = trim($_POST['email']);
+        }else{
+            $email_err = "Please enter a VALID Email";
+        }
+
+
+
     }
+
+    $uppercase = preg_match('@[A-Z]@', trim($_POST["password"]));
+    $lowercase = preg_match('@[a-z]@', trim($_POST["password"]));
+    $number    = preg_match('@[0-9]@', trim($_POST["password"]));
 
     if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
     } else {
-        $password = trim($_POST["password"]);
+        if(!$uppercase || !$lowercase || !$number  || strlen(trim($_POST["password"])) < 8) {
+            $password_err = 'Password should be at least 8 characters in length and should include at least one upper case letter, one number.';
+        }else{
+            $password = trim($_POST["password"]);
+        }
+
     }
 
     if (empty(trim($_POST["first_name"]))) {
@@ -32,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $last_name = trim($_POST["last_name"]);
     }
     if (empty(trim($_POST["address"]))) {
-        $address = "Please enter your address.";
+        $address_err = "Please enter your address.";
     } else {
         $address = trim($_POST["address"]);
     }
@@ -108,7 +133,9 @@ VALUES(:email, :password, :first_name, :last_name,:country,:address, :post_code,
 
         if ($stmt->execute()) {
             header("Location: loginForm.php");
+
             echo "Registration Successful!";
+
         }
     }else{
         echo " dx";
@@ -120,7 +147,7 @@ VALUES(:email, :password, :first_name, :last_name,:country,:address, :post_code,
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <style>
         body{ font: 14px sans-serif;  box-sizing: border-box; }
         text {
@@ -133,6 +160,7 @@ VALUES(:email, :password, :first_name, :last_name,:country,:address, :post_code,
 
         .wrapper{ width: 400px; padding: 10px; align="center"; text-align: center; margin: 0 auto;}
         span{display: flex; justify-content: center}
+        .invalid-feedback{color: red}
     </style>
 </head>
 <body>
@@ -252,3 +280,6 @@ VALUES(:email, :password, :first_name, :last_name,:country,:address, :post_code,
 
 </body>
 </html>
+<?php
+include ("footer.php");
+?>

@@ -20,7 +20,7 @@ $airports = $query->fetchAll();
 
         <p>Fill in the fields below and click "Add Flight" to add a new flight</p> <br><br><br>
 
-        <form action="saveNewFlight2.php" method="post" align="center">
+        <form action="saveNewFlight.php" method="post" align="center">
 
 
             <label for="from_Airport">Origin of Flight: </label>
@@ -55,7 +55,7 @@ $airports = $query->fetchAll();
             <label for="departure_datetime">Departure Date:</label>
             <input type="datetime-local" id="departure_datetime" name="departure_datetime"> <br><br>
 
-            <label for="return_datetime">Return Time:</label>
+            <label for="return_datetime">Return Date:</label>
             <input type="datetime-local" id="return_datetime" name="return_datetime"> <br><br>
 
             <label for="number_of_seats">Number of Seats:</label>
@@ -63,6 +63,12 @@ $airports = $query->fetchAll();
 
             <label for="price">Base Price:</label>
             <input type="number" id="price" name="price" placeholder="Enter a number (£)" min="0" step=".01"> <br><br>
+
+            <label for="price">One Way?</label>
+            <select name="one_way_status">
+                    <option value="FALSE">No</option>
+                    <option value="TRUE">Yes (No return date)</option>
+            </select> <br> <br>
 
             <input type="submit" name="submitBtn" value="Add Flight">
         </form>

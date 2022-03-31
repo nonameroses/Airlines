@@ -1,12 +1,13 @@
 <?php
+include "header.php";
+
 session_start();
 error_reporting(E_ALL);
 
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: index.php");
-    exit;
-}
+
 include "connection.php";
+
+
 $email = $password = "";
 $email_err = $password_err = "";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($username_err) && empty($password_err)) {
-        $sql = "SELECT id, email, password, first_name, last_name FROM users WHERE email = :email";
+        $sql = "SELECT id, email, password, first_name, last_name, country,post_code,phone_number, address FROM users WHERE email = :email";
 
         if($stmt = $conn->prepare($sql)){
             $param_email = $_POST['email'];
@@ -41,6 +42,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $first_name = $row["first_name"];
                         $last_name = $row["last_name"];
+                        $country = $row["country"];
+                        $post_code = $row["post_code"];
+                        $phone_number = $row["phone_number"];
+                        $address = $row["address"];
+
 
                         if(password_verify($password, $row['password'])){
                             session_start();
@@ -50,11 +56,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["id"] = $id;
                             $_SESSION["email"] = $email;
                             //$_SESSION["password"] =$password;
-                            $_SESSION["first_name"] = $first_name;
+                            $_SESSION["country"] = $country;
                             $_SESSION["last_name"] = $last_name;
+                            $_SESSION["first_name"] = $first_name;
+                            $_SESSION["post_code"] = $post_code;
+                            $_SESSION["phone_number"] = $phone_number;
+                            $_SESSION["address"] = $address;
 
-                            $login_err = "validddd username or password";
-                            header("Location: index.php");
+
+                            $login_err = "valid username or password";
+
+                            header("Location: updateUser.php");
 
 
                         }
@@ -77,7 +89,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <style>
         body{ font: 14px sans-serif;  box-sizing: border-box; }
         text {
@@ -94,8 +106,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <div class="wrapper">
-    <h2>Sign Up</h2>
-    <p>Please fill this form to create an account.</p>
+    <h2>Sign in</h2>
+  
 
     <?php
     if(!empty($login_err)){
@@ -129,5 +141,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+<?php
+include ("footer.php");
+?>
 
 

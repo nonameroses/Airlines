@@ -1,11 +1,10 @@
+
+
 <?php
-$servername = "localhost";
-$username = "satan";
-$password = "sterling22";
 
 try{
 
-    $conn = new PDO('mysql:host=localhost;dbname=airlindb', $username, $password);
+    $conn = new PDO('mysql:host=selene.hud.ac.uk;dbname=u2065667', 'u2065667', 'US28nov01us');
     $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
 }
@@ -15,3 +14,4 @@ catch (PDOException $exception)
 }
 
 ?>
+

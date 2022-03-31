@@ -1,12 +1,64 @@
 <?php
 session_start();
 include "connection.php";
+include "ifSessionHeader.php";
+  /*
+$email = trim($_POST['email']);
+$country = trim($_POST['country']);
+$address = trim($_POST['address']);
+$post_code = trim($_POST['post_code']);
+$phone_number = trim($_POST['phone_number']);
+     */
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $sql = "SELECT id, email, password, first_name, last_name FROM users WHERE email = :email";
 
+
+
+
+if(isset($_POST['edit'])) {
+    $id = $_SESSION['id'];
+    $email = $_POST['email'];
+    $country = $_POST['country'];
+    $address = $_POST['address'];
+    $post_code = $_POST['post_code'];
+    $phone_number = $_POST['phone_number'];
+
+
+    $select = "SELECT * FROM users WHERE id='$id'";
+
+
+    $sql = mysqli_query($conn, $select);
+
+
+    $row = mysqli_fetch_assoc($sql);
+    $res = $row['id'];
+
+    $res = $row['id'];
+    if ($res === $id) {
+        $update = "UPDATE users SET email='$email', country=' $country', address='$address', 
+        post_code = '$post_code', phone_number = '$phone_number' where id='$id'";
+
+        $sql2 = mysqli_query($conn, $update);
+
+
+    }
+
+    if($sql2)
+    {
+        /*Successful*/
+        echo "success";
+        echo "<script type='text/javascript'>alert('Successful - Record Updated!'); window.location.href = 'user_profile.php';</script>";
+        header('location: index.php');
+        die();
+    }
+    else
+    {
+        /*sorry your profile is not update*/
+        echo "not ";
+        header('location: userSettings.php');
+    }
 }
+
 
 
 
@@ -17,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <div>
     <h1>Edit your account</h1>
-    <h2>What would you like to change?</h2>
+
 
     <fieldset>
         <legend>Account Details</legend>
@@ -61,10 +113,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
 
-
+        <input type="submit" class="btn btn-primary" value="Update" id="edit" name = "edit">
     </fieldset>
 </div>
 </body>
 </html>
+
+<?php
+include ("footer.php");
+?>
 
 
